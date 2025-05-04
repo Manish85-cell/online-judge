@@ -1,0 +1,41 @@
+<!-- problems.html -->
+{% extends '../layout.html' %}
+{% load custom_filters %}
+
+{% block body %}
+<div class="container" >
+  {% csrf_token %}
+  <div class="search-bar">
+    <input type="text" placeholder="Search" class="search-input">
+    <button class="btn btn-search">Search</button>
+  </div>
+  <table class="problem-table">
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Problem</th>
+        <th>Difficulty Level</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for Prob in Problems %}
+      <tr onclick="location.href= '{% url 'solve' Prob.id %}'" style="cursor: pointer;">
+        <td>
+          {% if user.is_authenticated %}
+            {% if not Prob.id in status %}
+              Unsolved
+            {% else %}
+              Solved
+            {% endif %}
+          {% else %}
+            <a href="{% url 'login'%}" style="color:aliceblue">Login<a>
+          {% endif %}
+        </td>
+        <td>{{ Prob.name }}</td>
+        <td>{{ Prob.difficulty_levels }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,2 @@
+Enter the number of elements in nums1: Enter the elements of nums1:
+Enter the number of elements in nums2: 

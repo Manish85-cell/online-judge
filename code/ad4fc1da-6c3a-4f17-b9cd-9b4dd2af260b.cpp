@@ -1,0 +1,1 @@
+#include <iostream>using namespace std;int main(){   string name, status;   cin>>name;   cout<<"Hello, "<<name<<"\n";   cin>>status;  cout<<status;}

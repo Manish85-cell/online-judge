@@ -1,0 +1,55 @@
+<!-- layout.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heat Wave | Online Judge</title>
+  <link rel="stylesheet" href="{% static 'oj/styles.css' %}">
+  <style>
+    .logo {
+    width: 80px; /* Adjust the size as needed */
+    height: 80px; /* Ensuring it's a square for a perfect circle */
+    border-radius: 50%; /* Makes the image round */
+    object-fit: cover; /* Ensures the image fits inside the circle without distortion */
+    margin-right: 20px; /* Adds space between logo and text */
+    vertical-align: middle; /* Aligns the image with the text */
+}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <div>
+        <a href="{% url 'problems' %}">
+        <img src="{% static 'oj/images/heat_wave_logo.jpg'%}" alt="HeatWave" class="logo">
+      </a>
+      </div>
+      <ul class="nav-links">
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="{% url 'problems' %}">Problems</a></li>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+            <li><a href="{% url 'login' %}">Sign In</a></li>    
+          {% endif %}
+      </ul>
+  </nav>
+  </header>
+
+  <main class="container">
+    {% block body %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2023 Heat Wave. All rights reserved.</p>
+    <p>mupre2002@gmail.com</p>
+    <p>7011834071</p>
+  </footer>
+  <script src="{% static 'oj/script.js'}">
+
+  </script>
+</body>
+</html>

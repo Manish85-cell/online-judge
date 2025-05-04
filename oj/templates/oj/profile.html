@@ -1,0 +1,28 @@
+<!-- profile.html -->
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+  <h1 class="section-title">Profile</h1>
+  <div class="profile-info">
+    <div class="username">{{ user.username }}</div>
+    <div class="solved-problems">
+      {% if user.solved_problems.count < 1 %}
+      Solved Problems: {{ user.solved_problems.count }}
+      {% elif user.solved_problems.count >= problems.id.count %}
+      Solved Problems: {{ user.solved_problems.count }}
+      {% else %}
+      Solved Problems: {{ user.solved_problems.count }}
+      {% endif %}
+    </div>
+    <div class="email">{{ user.email }}</div>
+    <div class="skill-level">
+      {% if user.solved_problems.count < 1 %}
+      newbie
+      {% else %}
+      Beginner
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

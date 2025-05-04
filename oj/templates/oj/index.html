@@ -1,0 +1,133 @@
+<!-- index.html -->
+{% extends "../layout.html" %}
+
+{% block body %}
+
+<head>
+  <style>
+    
+
+
+
+.hero {
+    text-align: center;
+    padding: 100px 0;
+   
+}
+
+.hero h2 {
+    font-size: 2.5em;
+}
+
+.hero p {
+    font-size: 1.5em;
+    margin: 20px 0;
+}
+
+.cta-button {
+    padding: 15px 30px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.cta-button:hover {
+    background-color: #45a049;
+}
+
+.featured-challenges {
+    padding: 50px 0;
+    background-color: #333;
+}
+
+.featured-challenges h3 {
+    text-align: center;
+    font-size: 2em;
+}
+
+.challenges-list {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.challenge-card {
+    background-color: #1e272e;
+    padding: 20px;
+    width: 30%;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.challenge-card h4 {
+    font-size: 1.5em;
+}
+
+.start-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0d3b66;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.start-button:hover {
+    background-color: #0a2a4d;
+}
+
+footer {
+    background-color: #0d3b66;
+    text-align: center;
+    padding: 20px;
+    color: #fff;
+}
+
+
+
+
+  </style>
+</head>
+
+<section class="hero">
+  <div class="container">
+      <!-- Dynamic User Greeting -->
+      {% if user.is_authenticated %}
+          <h2>Hello {{ user.username }}! Welcome back to HeatWave.</h2>
+      {% else %}
+          <h2>Hello Coder! Ready to start your coding journey?</h2>
+      {% endif %}
+      
+      <!-- Motivational Call-to-Action -->
+      <p>Do Your Best!</p>
+      <button class="cta-button">Let's Do It!</button>
+      {% if user.is_authenticated %}
+      <div class="user-stats">
+        <h3>Your Stats</h3>
+        <p>Total Problems Solved: {{ user.solved_problems.count }}</p>
+        <!-- <p>Current Rank: {{ user.stats.rank }}</p>
+        <p>Last Solved Problem: {{ user.stats.last_problem.title }}</p> -->
+      </div>
+      {% endif %}
+  </div>
+</section>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+const ctaButton = document.querySelector('.cta-button');
+
+ctaButton.addEventListener('click', function() {
+  alert('Let’s start coding!');
+});
+});
+
+</script>
+{% endblock %}
+

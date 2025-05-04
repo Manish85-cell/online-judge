@@ -1,0 +1,21 @@
+<!-- task.html -->
+{% extends '../layout.html' %}
+
+{% block body %}
+<div class="container">
+  <h1 class="section-title">Task Manager</h1>
+  {% if message %}
+  <div class="message">{{ message }}</div>
+  {% endif %}
+  {% if tasks %}
+  <ul class="task-list">
+    {% for task in tasks %}
+    <li class="task-item">{{ task }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="no-tasks">No tasks</p>
+  {% endif %}
+  {% csrf_token %}
+</div>
+{% endblock %}

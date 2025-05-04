@@ -1,0 +1,318 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700&display=swap" />  
+    <title>{{problem.name}}</title>
+    <style>
+        /* New color scheme */
+        :root {
+            --primary-bg: #1f2937; /* Darker background */
+            --secondary-bg: #4b5563; /* Light grey background for sections */
+            --primary-color: #f3f4f6; /* Light color for text */
+            --accent-color: #10b981; /* Green accent color */
+            --error-color: #ef4444; /* Red for errors */
+            --border-color: #374151; /* Border color */
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            height: 100vh;
+            background: var(--primary-bg);
+            margin: 0;
+            font-family: 'Poppins', sans-serif; /* New consistent font */
+            color: var(--primary-color); /* Set text color */
+        }
+
+        .container {
+            max-width: 2000px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            background-color: var(--secondary-bg); /* Secondary background */
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+        }
+
+        .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: var(--accent-color);
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .examples, .code-section, .test-cases {
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            margin: 10px;
+            background-color: var(--secondary-bg);
+        }
+
+        h2 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: var(--primary-color);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid var(--accent-color);
+            background-color: var(--primary-bg);
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-color);
+            transform: scale(1.02);
+        }
+
+        input, select, textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 2px solid var(--border-color);
+            background-color: var(--primary-bg);
+            color: #fff;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--accent-color);
+        }
+
+        .language-selection {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .radio-group label {
+            margin-right: 15px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #code {
+            resize: horizontal;
+            min-width: 290px;
+            max-width: 930px;
+            min-height: 517px; /* Set a fixed height for better layout */
+            font-family: 'Courier New', monospace; /* Monospace font for code */
+        }
+
+        #code_test {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #run, #submit {
+            width: 40%;
+        }
+
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .tab-buttons .mybutton {
+            margin: 0 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        /* Responsive improvements */
+        @media screen and (max-width: 1000px) {
+            .container {
+                padding: 10px;
+                flex-direction: column;
+            }
+
+            #code {
+                width: 100%;
+                height: 200px; /* Adjust height for smaller screens */
+            }
+
+            .flex_container {
+                flex-direction: column;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+            }
+        }
+        .flex_container {
+            display: flex;
+            flex-direction: row;
+        }
+        /* Accessibility improvements */
+        button:focus, input:focus, select:focus, textarea:focus {
+            outline: 3px solid var(--accent-color); /* Clear focus outline */
+        }
+        #flex{
+            width: 1476px;
+        }
+        .tooltip-notification {
+            display: none;
+            padding: 10px;
+            background-color: #846cd4;
+            color: #fff;
+            margin: 10px 0;
+            border-radius: 5px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+      <!-- Tooltip notification -->
+      <div class="tooltip-notification" id="tooltip-notification">
+        Double-tap the code editor or Problem Statement to expand it for better visibility!
+        <button onclick="dismissTooltip()">Got it!</button>
+    </div>
+    <div id="flex">
+        <div class="title">
+            <div>
+                <a href="{% url 'problems' %}" style="text-decoration: none; color: white;">
+                    Back
+                </a>
+            </div>
+            <div>
+                {{problem.name}}
+            </div>
+            <div>
+                <a href="{% url 'solve' next %}" style="text-decoration: none; color: white;">
+                    Next
+                </a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="examples" ondblclick="toggle('.test-cases')">
+                <h2>Problem Statement</h2>
+                <p>{{problem.statement|linebreaksbr}}</p>
+            </div>
+            <div class="flex_container">
+                <!-- <div class="code-section" ondblclick="toggle('.examples'), toggle('.test-cases')" style="cursor: pointer;"> -->
+                <div class="code-section" ondblclick="toggle('.examples')" style="cursor: pointer;">
+                    <h2>Code Here</h2>
+                    <form action="{% url 'solve' problem.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="language-selection">
+                            <label for="language">Language:</label>
+                            <div class="radio-group">
+                                {% for option in options %}
+                                    <input type="radio" id="{{ option.value }}" name="language" {% if option.value == 'py' %} checked {% endif %} value="{{ option.value }}" {% if option.value == lang %}checked{% endif %}>
+                                    <label for="{{ option.value }}">{{ option.label }}</label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <textarea id="code" name="code" rows="25" cols="80" style="font-size: 15px;">{{code}}</textarea>
+                        <textarea type="text" id="input_data" name="input_data" placeholder="{{ input }}" style="display: none;" rows="2" columns="10"></textarea>
+                        <div id="code_test">
+                            <button type="submit" name="action" id="run" value="run" class="mybutton">Run Code</button>
+                            <!-- <button type="submit" name="action" id="evaluate" value="evaluate" class="mybutton">Evaluate</button> -->
+                            <button type="submit" name="action" id="submit" value="submit" class="mybutton">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="test-cases">
+                    <div class="tab-buttons">
+                        {% if expected_output %}
+                           <button onclick="showSection('input', 'output')" class="btn-custom-failure">Error</button>
+                        {% else %}
+                          <button onclick="showSection('input', 'output')" class="mybutton">Input</button>
+                        {% endif %}
+                        <button onclick="showSection('output', 'input')" class="mybutton">Output</button>
+                    </div>
+                    <div id="output">
+                        <h2>Output</h2>
+                        {% if expected_output %}
+                        <button class="btn-custom-failure">{{message|linebreaksbr}}</button>
+                        <br>
+                        {% else %}
+                        <button class="btn-custom-success">{{message|linebreaksbr}}</button>
+                        {{quality|linebreaksbr}}
+                        <br>
+                        {% endif %}
+                        <div style="font-size: x-large;">
+                            $<br>{% if output and not expected_output %}
+                                {{output|linebreaksbr}} 
+                            {% endif %}   
+                        </div>
+                    </div>
+                    <div id="input" style="display: none;">
+                        <textarea type="text" id="input_data_visible" name="input_data_visible" placeholder="{{ input }}" rows="4" cols="50" style="border: 2px solid black;">{{input}}</textarea><br>
+                        {% if expected_output %}
+                        <label for="floatingInputInvalid">Your Output</label>
+                        <input class="form-control is-invalid" id="floatingInputInvalid" placeholder="Your output" value="{{output}}">
+                        <label for="floatingInputInvalid">Expected Output</label>
+                        <input class="form-control is-valid" id="floatingInputInvalid" placeholder="Expected output" value="{{expected_output}}">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('input_data').value = document.getElementById('input_data_visible').value;
+        });
+
+        function toggle(className) {
+            $(className).toggle(500);
+        }
+
+        function showSection(show, hide) {
+            document.getElementById(show).style.display = 'block';
+            document.getElementById(hide).style.display = 'none';
+        }
+        $(document).ready(function() {
+            if (!localStorage.getItem('tooltipDismissed')) {
+                $('#tooltip-notification').fadeIn(500);
+                
+                // Hide the notification after 5 seconds if not dismissed manually
+                setTimeout(function() {
+                    $('#tooltip-notification').fadeOut(500);
+                    // Optionally set the flag when the timeout is reached
+                    localStorage.setItem('tooltipDismissed', 'true');
+                }, 5000);
+            }
+        });
+
+        // Manually dismiss the tooltip notification
+        function dismissTooltip() {
+            $('#tooltip-notification').fadeOut(500);
+            localStorage.setItem('tooltipDismissed', 'true'); // Set the flag when dismissed manually
+        }
+    </script>
+</body>
+</html>
